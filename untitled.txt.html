@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login System</title>
+<style>
+body {
+  font-family: Arial;
+  background: url('https://images.unsplash.com/photo-1605902711622-cfb43c4437d1') no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.box {
+  background: rgba(0,0,0,0.8);
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  color:background images;
+  text-align: center;
+}
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 8px;
+  border-radius: 5px;
+  border: none;
+}
+button {
+  padding: 10px;
+  margin: 5px;
+  width: 95%;
+  border: none;
+  border-radius: 5px;
+  background: #00c3ff;
+  color: white;
+  cursor: pointer;
+}
+.hidden { display: none; }
+</style>
+</head>
+<body><div class="box" id="login">
+<h2>Login</h2>
+<input type="text" id="loginName" placeholder="Name">
+<input type="text" id="loginUser" placeholder="Username">
+<input type="password" id="loginPass" placeholder="Password">
+<button onclick="login()">Login</button>
+<button onclick="showSignup()">Create an Account</button>
+<p id="loginMsg"></p>
+</div><div class="box hidden" id="signup">
+<h2>Sign Up</h2>
+<input type="text" id="name" placeholder="Name">
+<input type="text" id="user" placeholder="Username">
+<input type="password" id="pass" placeholder="Password">
+<input type="password" id="confirm" placeholder="Confirm Password">
+<input type="email" id="email" placeholder="Email">
+<button onclick="signup()">Create Account</button>
+</div><div class="box hidden" id="emailVerify">
+<h2>Email Verification</h2>
+<input type="email" id="verifyEmail" placeholder="Enter Your Email">
+<button onclick="sendOTP()">Send OTP</button>
+</div><div class="box hidden" id="otpBox">
+<h2>Enter OTP</h2>
+<input type="text" id="otpInput" placeholder="Enter OTP">
+<button onclick="verifyOTP()">Verify OTP</button>
+<p id="otpMsg"></p>
+</div><script>
+let savedUser = "";
+let savedPass = "";
+let savedEmail = "";
+let otp = "1234"; // demo OTP
+
+function showSignup() {
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('signup').classList.remove('hidden');
+}
+
+function signup() {
+  let name = document.getElementById('name').value;
+  let user = document.getElementById('user').value;
+  let pass = document.getElementById('pass').value;
+  let confirm = document.getElementById('confirm').value;
+  let email = document.getElementById('email').value;
+
+  if (!name || !user || !pass || !confirm || !email) {
+    alert('Fill all details');
+    return;
+  }
+  if (pass !== confirm) {
+    alert('Password not match');
+    return;
+  }
+
+  savedUser = user;
+  savedPass = pass;
+  savedEmail = email;
+
+  alert('Account created');
+
+  document.getElementById('signup').classList.add('hidden');
+  document.getElementById('login').classList.remove('hidden');
+}
+
+function login() {
+  let name = document.getElementById('loginName').value;
+  let user = document.getElementById('loginUser').value;
+  let pass = document.getElementById('loginPass').value;
+
+  if (!name || !user || !pass) {
+    document.getElementById('loginMsg').innerText = 'Enter The Details';
+    return;
+  }
+
+  if (user === savedUser && pass === savedPass) {
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('emailVerify').classList.remove('hidden');
+  } else {
+    document.getElementById('loginMsg').innerText = 'Invalid Login';
+  }
+}
+
+function sendOTP() {
+  let email = document.getElementById('verifyEmail').value;
+
+  if (email !== savedEmail) {
+    alert('Wrong Email');
+    return;
+  }
+
+  alert('OTP Sent: ' + otp);
+
+  document.getElementById('emailVerify').classList.add('hidden');
+  document.getElementById('otpBox').classList.remove('hidden');
+}
+
+function verifyOTP() {
+  let userOtp = document.getElementById('otpInput').value;
+
+  if (userOtp === otp) {
+    document.getElementById('otpMsg').innerText = 'Login Success ✅';
+  } else {
+    document.getElementById('otpMsg').innerText = 'Wrong OTP ❌';
+  }
+}
+</script></body>
+</html>
